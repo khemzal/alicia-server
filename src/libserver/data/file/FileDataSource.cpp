@@ -521,11 +521,6 @@ void server::FileDataSource::RetrieveHorse(data::Uid uid, data::Horse& horse)
   horse.clazzProgress = json["clazzProgress"].get<uint32_t>();
   horse.grade = json["grade"].get<uint32_t>();
   horse.growthPoints = json["growthPoints"].get<uint32_t>();
-  
-  // Family tree fields
-  horse.fatherUid = json.value("fatherUid", 0u);
-  horse.motherUid = json.value("motherUid", 0u);
-  horse.lineage = json.value("lineage", 0u);
 
   auto potential = json["potential"];
   horse.potential = data::Horse::Potential{
@@ -554,6 +549,15 @@ void server::FileDataSource::RetrieveHorse(data::Uid uid, data::Horse& horse)
     .participated = mountInfo["participated"].get<uint32_t>(),
     .cumulativePrize = mountInfo["cumulativePrize"].get<uint32_t>(),
     .biggestPrize = mountInfo["biggestPrize"].get<uint32_t>()};
+  
+  if (json.contains("ancestors"))
+  {
+    horse.ancestors = json["ancestors"].get<std::vector<data::Uid>>();
+  }
+  else
+  {
+    horse.ancestors = std::vector<data::Uid>{};
+  }
 }
 
 void server::FileDataSource::StoreHorse(data::Uid uid, const data::Horse& horse)
@@ -625,11 +629,6 @@ void server::FileDataSource::StoreHorse(data::Uid uid, const data::Horse& horse)
   json["clazzProgress"] = horse.clazzProgress();
   json["grade"] = horse.grade();
   json["growthPoints"] = horse.growthPoints();
-  
-  // Family tree fields
-  json["fatherUid"] = horse.fatherUid();
-  json["motherUid"] = horse.motherUid();
-  json["lineage"] = horse.lineage();
 
   nlohmann::json potential;
   potential["type"] = horse.potential.type();
@@ -657,6 +656,8 @@ void server::FileDataSource::StoreHorse(data::Uid uid, const data::Horse& horse)
   mountInfo["cumulativePrize"] = horse.mountInfo.cumulativePrize();
   mountInfo["biggestPrize"] = horse.mountInfo.biggestPrize();
   json["mountInfo"] = mountInfo;
+
+  json["ancestors"] = horse.ancestors();
   dataFile << json.dump(2);
 }
 
