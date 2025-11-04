@@ -1,3 +1,4 @@
+
 /**
  * Alicia Server - dedicated server software
  * Copyright (C) 2024 Story Of Alicia
@@ -1765,8 +1766,19 @@ void RanchDirector::HandleTryBreeding(
       });
     }
     
-    // TODO: Send breeding failure response to client
-    // For now, update inventory to reflect carrot deduction
+    // Set up breeding failure card for the player
+    // Randomly determine card type: 50/50 chance between Normal (RED=0) and Chance (YELLOW=1)
+    std::uniform_int_distribution<int> cardTypeDist(0, 1);
+    uint8_t cardType = static_cast<uint8_t>(cardTypeDist(_randomDevice));
+    
+    auto& ctx = GetClientContext(clientId);
+    ctx.hasPendingFailureCard = true;
+    ctx.pendingCardType = cardType;
+    
+    spdlog::info("TryBreeding: Breeding failure card ready - {} card", 
+      cardType == 1 ? "CHANCE (YELLOW)" : "NORMAL (RED)");
+    
+    // Update inventory to reflect carrot deduction
     SendInventoryUpdate(clientId);
     return;
   }
@@ -1991,7 +2003,6 @@ void RanchDirector::HandleTryBreeding(
   protocol::RanchCommandTryBreedingOK response{
     .uid = foalUid,
     .tid = foalTid,
-<<<<<<< HEAD
     .val = 0,
     .count = 0,
     .unk0 = 1,  // Set to 1 to potentially skip animation
@@ -2004,16 +2015,6 @@ void RanchDirector::HandleTryBreeding(
     .stats = {.agility = 9, .ambition = 9, .rush = 9, .endurance = 9, .courage = 9},
     .unk1 = 0,
     .unk2 = 0,
-=======
-    .val = 1,
-    .count = 1,
-    .unk0 = foalGradeForResponse,
-    .parts = foalParts,
-    .appearance = foalAppearance,
-    .stats = foalStats,
-    .unk1 = 0, // Shows a window saying the foal has returned to the ranch"목장으로 돌아갔습니다"
-    .unk2 = 0, // Pregnancy bonus (BonusProbInfo in libconfig) TODO: Implement pregnancy bonus
->>>>>>> e006f60 (Applied coat inheritance rate (libconfig))
     .unk3 = 0,
     .unk4 = 0,
     .unk5 = 0,
@@ -2318,6 +2319,11 @@ void RanchDirector::HandleBreedingFailureCardChoose(
     rewardGrade, moneySpent, gradeRoll, rewardId,
     rewardData->gameMoney, rewardData->itemTid, rewardData->itemCount);
 
+  // Clear the pending card flag after claiming
+  auto& ctx = GetClientContext(clientId);
+  ctx.hasPendingFailureCard = false;
+  ctx.pendingCardType = 0;
+
   _commandServer.QueueCommand<decltype(response)>(
     clientId,
     [response]()
@@ -2601,7 +2607,6 @@ void RanchDirector::HandleGetItemFromStorage(
   const auto characterRecord = GetServerInstance().GetDataDirector().GetCharacter(
     clientContext.characterUid);
 
-<<<<<<< HEAD
   bool isStorageItemValid = true;
 
   // Try to remove the storage item from the character.
