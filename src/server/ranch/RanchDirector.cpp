@@ -1921,6 +1921,7 @@ void RanchDirector::HandleTryBreeding(
   protocol::RanchCommandTryBreedingOK response{
     .uid = foalUid,
     .tid = foalTid,
+<<<<<<< HEAD
     .val = 0,
     .count = 0,
     .unk0 = 1,  // Set to 1 to potentially skip animation
@@ -1933,6 +1934,16 @@ void RanchDirector::HandleTryBreeding(
     .stats = {.agility = 9, .ambition = 9, .rush = 9, .endurance = 9, .courage = 9},
     .unk1 = 0,
     .unk2 = 0,
+=======
+    .val = 1,
+    .count = 1,
+    .unk0 = foalGradeForResponse,
+    .parts = foalParts,
+    .appearance = foalAppearance,
+    .stats = foalStats,
+    .unk1 = 0, // Shows a window saying the foal has returned to the ranch"목장으로 돌아갔습니다"
+    .unk2 = 0, // Pregnancy bonus (BonusProbInfo in libconfig) TODO: Implement pregnancy bonus
+>>>>>>> e006f60 (Applied coat inheritance rate (libconfig))
     .unk3 = 0,
     .unk4 = 0,
     .unk5 = 0,
@@ -1981,14 +1992,8 @@ void RanchDirector::HandleBreedingFailureCard(
 {
   spdlog::info("BreedingFailureCard: statusOrFlag is this aa = {}", command.statusOrFlag);
   
-<<<<<<< HEAD
   protocol::AcCmdCRBreedingFailureCardOK response{};
   response.choiceOrFlag = 1; //set ChoiceOrFlag to 1
-=======
-  protocol::AcCmdCRBreedingFailureCardOK response{
-    .choiceOrFlag = 0  // Default choice/flag value
-  };
->>>>>>> 04eb49f (Register stallions in real time and preserve the data during server relaunch.)
 
   _commandServer.QueueCommand<decltype(response)>(
     clientId,
