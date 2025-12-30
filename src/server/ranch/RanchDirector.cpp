@@ -1981,7 +1981,8 @@ void RanchDirector::HandleTryBreeding(
   protocol::Horse::Stats foalStats{};
   
   foalRecord.Mutable([this, &command, &mareRecord, &stallionRecord, &foalUid, &foalTid, 
-                      &foalPotentialType, &foalParts, &foalAppearance, &foalStats](data::Horse& foal)
+                      &foalPotentialType, &foalParts, &foalAppearance, &foalStats,
+                      rolledBonusId, rolledBonusType](data::Horse& foal)
   {
     // Get parent data for genetics
     data::Tid mareTid = 0;
