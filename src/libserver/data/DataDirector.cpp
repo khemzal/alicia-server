@@ -1012,6 +1012,38 @@ DataDirector::SettingsStorage& DataDirector::GetSettingsCache()
   return _settingsStorage;
 }
 
+Record<data::Stallion> DataDirector::GetStallion(data::Uid stallionUid) noexcept
+{
+  if (stallionUid == data::InvalidUid)
+    return {};
+  return _stallionStorage.Get(stallionUid).value_or(Record<data::Stallion>{});
+}
+
+Record<data::Stallion> DataDirector::CreateStallion() noexcept
+{
+  try
+  {
+    return _stallionStorage.Create(
+      [this]()
+      {
+        data::Stallion stallion;
+        _primaryDataSource->CreateStallion(stallion);
+
+        return std::make_pair(stallion.uid(), std::move(stallion));
+      });
+  }
+  catch (const std::exception& x)
+  {
+    spdlog::error("Exception while creating a stallion record on the primary data source: {}", x.what());
+    return {};
+  }
+}
+
+DataDirector::StallionStorage& DataDirector::GetStallionCache()
+{
+  return _stallionStorage;
+}
+
 FileDataSource& DataDirector::GetFileDataSource()
 {
   return static_cast<FileDataSource&>(*_primaryDataSource);
