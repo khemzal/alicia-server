@@ -2331,7 +2331,7 @@ void RanchDirector::HandleBreedingFailureCardChoose(
   ClientId clientId,
   const protocol::AcCmdCRBreedingFailureCardChoose& command)
 {
-  spdlog::info("BreedingFailureCardChoose: statusOrFlag = is this {}", command.statusOrFlag);
+  spdlog::info("BreedingFailureCardChoose: statusOrFlag xdd = is this {}", command.statusOrFlag);
   
   const auto& clientContext = GetClientContext(clientId);
   auto characterRecord = GetServerInstance().GetDataDirector().GetCharacter(

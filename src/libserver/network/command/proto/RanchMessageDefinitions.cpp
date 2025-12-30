@@ -599,7 +599,8 @@ void AcCmdCRBreedingFailureCardChoose::Read(
   AcCmdCRBreedingFailureCardChoose& command,
   SourceStream& stream)
 {
-  stream.Read(command.statusOrFlag);
+  // Client sends empty packet - no data to read
+  // stream.Read(command.statusOrFlag);
 }
 
 void AcCmdCRBreedingFailureCardChooseOK::Write(
