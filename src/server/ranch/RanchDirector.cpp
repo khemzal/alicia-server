@@ -2259,7 +2259,7 @@ void RanchDirector::HandleTryBreeding(
   }
   
   spdlog::info("TryBreeding: Created foal UID={}, TID={}, also this is the version with agility 5 ", foalUid, foalTid);
-  
+  spdlog::info("updated version yes :3")
   // Broadcast the new foal to all clients in the ranch
   BroadcastUpdateMountInfoNotify(
     clientContext.characterUid,
