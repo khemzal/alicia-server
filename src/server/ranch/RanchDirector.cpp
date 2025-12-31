@@ -2256,12 +2256,19 @@ void RanchDirector::HandleTryBreeding(
   
   spdlog::info("TryBreeding: Created foal UID={}, TID={}", foalUid, foalTid);
   
+  // Broadcast the new foal to all clients in the ranch
+  BroadcastUpdateMountInfoNotify(
+    clientContext.characterUid,
+    clientContext.visitingRancherUid,
+    foalUid);
+
+
   protocol::RanchCommandTryBreedingOK response{
     .uid = foalUid,
     .tid = foalTid,
     .val = 0,
     .count = 0,
-    .unk0 = 1,  // Set to 1 to potentially skip animation
+    .unk0 = 0,  // Set to 1 to potentially skip animation
     .parts = {
       .skinId = 1,
       .maneId = 4,
@@ -2281,11 +2288,7 @@ void RanchDirector::HandleTryBreeding(
     .unk10 = 0,
   };
 
-  // Broadcast the new foal to all clients in the ranch
-  BroadcastUpdateMountInfoNotify(
-    clientContext.characterUid,
-    clientContext.visitingRancherUid,
-    foalUid);
+
   
   _commandServer.QueueCommand<decltype(response)>(
     clientId,
