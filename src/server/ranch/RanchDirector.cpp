@@ -2147,6 +2147,7 @@ void RanchDirector::HandleTryBreeding(
     foal.clazzProgress() = 0;
     foal.growthPoints() = 0;
     
+    
     // Initialize foal condition with full stamina
     foal.mountCondition.stamina() = 4000;
     
@@ -2266,7 +2267,7 @@ void RanchDirector::HandleTryBreeding(
   protocol::RanchCommandTryBreedingOK response{
     .uid = foalUid,
     .tid = foalTid,
-    .val = 0,
+    .val = 1,
     .count = 0,
     .unk0 = 0,  // Set to 1 to potentially skip animation
     .parts = foalParts,
