@@ -2254,7 +2254,7 @@ void RanchDirector::HandleTryBreeding(
     });
   }
   
-  spdlog::info("TryBreeding: Created foal UID={}, TID={}", foalUid, foalTid);
+  spdlog::info("TryBreeding: Created foal UID={}, TID={}, also this is the version with agility 5 ", foalUid, foalTid);
   
   // Broadcast the new foal to all clients in the ranch
   BroadcastUpdateMountInfoNotify(
