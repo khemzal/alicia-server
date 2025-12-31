@@ -2269,13 +2269,9 @@ void RanchDirector::HandleTryBreeding(
     .val = 0,
     .count = 0,
     .unk0 = 0,  // Set to 1 to potentially skip animation
-    .parts = {
-      .skinId = 1,
-      .maneId = 4,
-      .tailId = 4,
-      .faceId = 5},
-    .appearance = {.scale = 4, .legLength = 4, .legVolume = 5, .bodyLength = 3, .bodyVolume = 4},
-    .stats = {.agility = 5, .ambition = 9, .rush = 9, .endurance = 9, .courage = 9},
+    .parts = foalParts,
+    .appearance = foalAppearance,
+    .stats = foalStats,
     .unk1 = 0,
     .unk2 = 0,
     .unk3 = 0,
