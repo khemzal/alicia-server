@@ -2148,6 +2148,7 @@ void RanchDirector::HandleTryBreeding(
     foal.growthPoints() = 0;
     
     
+    
     // Initialize foal condition with full stamina
     foal.mountCondition.stamina() = 4000;
     
@@ -2215,6 +2216,8 @@ void RanchDirector::HandleTryBreeding(
     foalStats.rush = foal.stats.rush();
     foalStats.endurance = foal.stats.endurance();
     foalStats.courage = foal.stats.courage();
+
+ 
   });
   
   // Add foal to character's horse list
@@ -2268,7 +2271,7 @@ void RanchDirector::HandleTryBreeding(
     .uid = foalUid,
     .tid = foalTid,
     .val = 1,
-    .count = 0,
+    .count = 2,
     .unk0 = 0,  // Set to 1 to potentially skip animation
     .parts = foalParts,
     .appearance = foalAppearance,
