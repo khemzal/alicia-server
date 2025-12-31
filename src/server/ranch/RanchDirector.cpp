@@ -2287,8 +2287,6 @@ void RanchDirector::HandleTryBreeding(
     clientContext.visitingRancherUid,
     foalUid);
   
-  // Update inventory to reflect carrot deduction
-  SendInventoryUpdate(clientId);
   _commandServer.QueueCommand<decltype(response)>(
     clientId,
     [response]()
