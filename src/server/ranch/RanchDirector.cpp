@@ -2131,6 +2131,8 @@ void RanchDirector::HandleTryBreeding(
     foal.stats.agility() = statResult.agility;
     foal.stats.courage() = statResult.courage;
     foal.stats.rush() = statResult.rush;
+
+
     foal.stats.endurance() = statResult.endurance;
     foal.stats.ambition() = statResult.ambition;
     
@@ -2285,6 +2287,8 @@ void RanchDirector::HandleTryBreeding(
     {
       return response;
     });
+
+
   
   // Update inventory to reflect carrot deduction
   SendInventoryUpdate(clientId);
@@ -2309,7 +2313,19 @@ void RanchDirector::HandleBreedingWishlist(
     {
       return response;
     });
+
+
+      // Broadcast the new foal to all clients in the ranch
+  BroadcastUpdateMountInfoNotify(
+    clientContext.characterUid,
+    clientContext.visitingRancherUid,
+    foalUid);
+  
+  // Update inventory to reflect carrot deduction
+  SendInventoryUpdate(clientId);
 }
+
+
 
 void RanchDirector::HandleBreedingFailureCard(
   ClientId clientId,
