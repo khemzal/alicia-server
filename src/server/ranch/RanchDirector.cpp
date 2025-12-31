@@ -2281,6 +2281,14 @@ void RanchDirector::HandleTryBreeding(
     .unk10 = 0,
   };
 
+  // Broadcast the new foal to all clients in the ranch
+  BroadcastUpdateMountInfoNotify(
+    clientContext.characterUid,
+    clientContext.visitingRancherUid,
+    foalUid);
+  
+  // Update inventory to reflect carrot deduction
+  SendInventoryUpdate(clientId);
   _commandServer.QueueCommand<decltype(response)>(
     clientId,
     [response]()
@@ -2315,14 +2323,7 @@ void RanchDirector::HandleBreedingWishlist(
     });
 
 
-      // Broadcast the new foal to all clients in the ranch
-  BroadcastUpdateMountInfoNotify(
-    clientContext.characterUid,
-    clientContext.visitingRancherUid,
-    foalUid);
-  
-  // Update inventory to reflect carrot deduction
-  SendInventoryUpdate(clientId);
+    
 }
 
 
