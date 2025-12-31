@@ -2272,7 +2272,7 @@ void RanchDirector::HandleTryBreeding(
     .tid = foalTid,
     .val = 1,
     .count = 2,
-    .unk0 = 0,  // Set to 1 to potentially skip animation
+    .unk0 = 3,  // Set to 1 to potentially skip animation
     .parts = foalParts,
     .appearance = foalAppearance,
     .stats = foalStats,
