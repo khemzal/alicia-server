@@ -1981,8 +1981,9 @@ void RanchDirector::HandleTryBreeding(
   protocol::Horse::Stats foalStats{};
   
   
+  uint8_t foalGrade = 0;
   foalRecord.Mutable([this, &command, &mareRecord, &stallionRecord, &foalUid, &foalTid, 
-                      &foalPotentialType, &foalParts, &foalAppearance, &foalStats,
+                      &foalPotentialType, &foalParts, &foalAppearance, &foalStats, &foalGrade,
                       rolledBonusId, rolledBonusType](data::Horse& foal)
   {
     // Get parent data for genetics
@@ -2067,7 +2068,7 @@ void RanchDirector::HandleTryBreeding(
     }
     
     auto& genetics = GetServerInstance().GetGenetics();
-    uint8_t foalGrade = genetics.CalculateFoalGrade(mareGrade, stallionGrade, fertilityPeakLevel);
+    foalGrade = genetics.CalculateFoalGrade(mareGrade, stallionGrade, fertilityPeakLevel);
     foal.grade() = foalGrade;
     
     // Use Genetics class for skin calculation with inheritance rate
