@@ -2207,6 +2207,9 @@ void RanchDirector::HandleTryBreeding(
     foalParts.maneId = MapToFoalColorTid(foal.parts.maneTid());
     foalParts.tailId = MapToFoalColorTid(foal.parts.tailTid());
     
+    foalParts.maneId = foal.parts.maneTid(); // add back normal mane/tail TID until we figure out how client handles foal mane/tail colors
+    foalParts.tailId = foal.parts.tailTid();
+
     foalAppearance.scale = foal.appearance.scale();
     foalAppearance.legLength = foal.appearance.legLength();
     foalAppearance.legVolume = foal.appearance.legVolume();
