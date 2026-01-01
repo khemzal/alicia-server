@@ -127,6 +127,8 @@ void BuildProtocolHorseParts(
   {
     maneId = MapToFoalColorTid(parts.maneTid());
     tailId = MapToFoalColorTid(parts.tailTid());
+    spdlog::debug("ProtocolHelper: TID after mapping Mane TID={}, Tail TID={}", 
+      maneId, tailId);
   }
   
   protocolHorseParts = {
