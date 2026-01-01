@@ -2207,8 +2207,11 @@ void RanchDirector::HandleTryBreeding(
       return ((adultTid - 1) % 5) + 1;
     };
     
-    foalParts.maneId = MapToFoalColorTid(foal.parts.maneTid());
-    foalParts.tailId = MapToFoalColorTid(foal.parts.tailTid());
+    //foalParts.maneId = MapToFoalColorTid(foal.parts.maneTid());
+    //foalParts.tailId = MapToFoalColorTid(foal.parts.tailTid());
+
+    foalParts.maneId = foal.parts.maneTid();
+    foalParts.tailId = foal.parts.tailTid();
 
     spdlog::debug("MapToFoalColorTid: TID after mapping - Mane TID={}, Tail TID={}", 
       foalParts.maneId, foalParts.tailId);
