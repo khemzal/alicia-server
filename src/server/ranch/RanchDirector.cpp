@@ -1980,6 +1980,7 @@ void RanchDirector::HandleTryBreeding(
   protocol::Horse::Appearance foalAppearance{};
   protocol::Horse::Stats foalStats{};
   
+  
   foalRecord.Mutable([this, &command, &mareRecord, &stallionRecord, &foalUid, &foalTid, 
                       &foalPotentialType, &foalParts, &foalAppearance, &foalStats,
                       rolledBonusId, rolledBonusType](data::Horse& foal)
@@ -2258,8 +2259,8 @@ void RanchDirector::HandleTryBreeding(
     });
   }
   
-  spdlog::info("TryBreeding: Created foal UID={}, TID={}, also this is the version with agility 5 ", foalUid, foalTid);
-  spdlog::info("updated version yes :3");
+  spdlog::info("TryBreeding: Created foal UID={}, TID={}", foalUid, foalTid);
+  spdlog::info("DEBUG: foalGrade value before response = {}");
   // Broadcast the new foal to all clients in the ranch
   BroadcastUpdateMountInfoNotify(
     clientContext.characterUid,
@@ -2272,7 +2273,7 @@ void RanchDirector::HandleTryBreeding(
     .tid = foalTid,
     .val = 1,
     .count = 2,
-    .unk0 = 3,  // DISPLAYED FOAL GRADE IN BREEDING ANIMATION!! not relevant to actual foal grade.
+    .unk0 = foalGrade,  // DISPLAYED FOAL GRADE IN BREEDING ANIMATION!! not relevant to actual foal grade.
     .parts = foalParts,
     .appearance = foalAppearance,
     .stats = foalStats,
