@@ -2327,18 +2327,51 @@ void RanchDirector::HandleBreedingWishlist(
   ClientId clientId,
   const protocol::RanchCommandBreedingWishlist& command)
 {
+  // Get the character making the request
+  const auto& clientContext = GetClientContext(clientId);
+  auto characterRecord = GetServerInstance().GetDataDirector().GetCharacter(
+    clientContext.characterUid);
+
   protocol::RanchCommandBreedingWishlistOK response{};
 
-  // TODO: Actually do something
+  // Retrieve all wishlisted stallions and build the response
+  characterRecord.Immutable([this, &response](const data::Character& character)
+  {
+    // Get the wishlisted stallions
+    const auto stallionRecords = GetServerInstance().GetDataDirector().GetHorseCache().Get(
+      character.breedingWishlist());
+
+    for (const auto& stallionRecord : *stallionRecords)
+    {
+      auto& element = response.wishlist.emplace_back();
+      stallionRecord.Immutable([&element](const data::Horse& stallion)
+      {
+        element.uid = stallion.uid();
+        element.tid = stallion.tid();
+        element.stats.agility = stallion.stats.agility();
+        element.stats.courage = stallion.stats.courage();
+        element.stats.rush = stallion.stats.rush();
+        element.stats.endurance = stallion.stats.endurance();
+        element.stats.ambition = stallion.stats.ambition();
+        element.parts.skinId = stallion.parts.skinTid();
+        element.parts.faceId = stallion.parts.faceTid();
+        element.parts.maneId = stallion.parts.maneTid();
+        element.parts.tailId = stallion.parts.tailTid();
+        element.appearance.scale = stallion.appearance.scale();
+        element.appearance.legLength = stallion.appearance.legLength();
+        element.appearance.legVolume = stallion.appearance.legVolume();
+        element.appearance.bodyLength = stallion.appearance.bodyLength();
+        element.appearance.bodyVolume = stallion.appearance.bodyVolume();
+      });
+    }
+  });
+
   _commandServer.QueueCommand<decltype(response)>(
     clientId,
     [response]()
     {
       return response;
     });
-
-
-    
 }
 
 void RanchDirector::HandleBreedingWishlistAdd(
@@ -2347,6 +2380,17 @@ void RanchDirector::HandleBreedingWishlistAdd(
 {
   // Log a debug message to the console/log file when this happens
   spdlog::debug("you just added a stallion to wishlist, its id is {}", command.stallionUid);
+  
+  // Get the character making the request
+  const auto& clientContext = GetClientContext(clientId);
+  auto characterRecord = GetServerInstance().GetDataDirector().GetCharacter(
+    clientContext.characterUid);
+  
+  // Add stallion to the character's wishlist
+  characterRecord.Mutable([&command](data::Character& character)
+  {
+    character.breedingWishlist().emplace_back(command.stallionUid);
+  });
   
   // Create an empty response object to send back to the client
   protocol::AcCmdCRBreedingWishlistAddOK response{};

@@ -298,6 +298,9 @@ struct Character
   dao::Field<std::vector<Uid>> horses{};
   dao::Field<uint32_t> horseSlotCount{0u};
   
+  // List of favorited stallion UIDs for the breeding wishlist
+  dao::Field<std::vector<Uid>> breedingWishlist{};
+  
   dao::Field<std::vector<Uid>> pets{};
   dao::Field<Uid> mountUid{InvalidUid};
   dao::Field<Uid> petUid{InvalidUid};

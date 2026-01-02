@@ -291,6 +291,9 @@ void server::FileDataSource::RetrieveCharacter(data::Uid uid, data::Character& c
   character.horses = json["horses"].get<std::vector<data::Uid>>();
   character.horseSlotCount = json["horseSlotCount"].get<uint32_t>();
 
+  // Load breeding wishlist (default to empty if not present)
+  character.breedingWishlist = json.value("breedingWishlist", std::vector<data::Uid>{});
+
   character.pets = json["pets"].get<std::vector<data::Uid>>();
   character.mountUid = json["mountUid"].get<data::Uid>();
   character.petUid = json["petUid"].get<data::Uid>();
@@ -375,6 +378,9 @@ void server::FileDataSource::StoreCharacter(data::Uid uid, const data::Character
 
   json["horses"] = character.horses();
   json["horseSlotCount"] = character.horseSlotCount();
+
+  // Save breeding wishlist
+  json["breedingWishlist"] = character.breedingWishlist();
 
   json["pets"] = character.pets();
   json["mountUid"] = character.mountUid();
