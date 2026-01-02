@@ -2334,7 +2334,34 @@ void RanchDirector::HandleBreedingWishlist(
     
 }
 
+// Register the handler that responds to AcCmdCRBreedingWishlistAdd commands
+_commandServer.RegisterCommandHandler<protocol::AcCmdCRBreedingWishlistAdd>(
+  // Lambda function that gets called when the command is received
+  [this](ClientId clientId, auto& command)
+  {
+    // Call the actual handler function
+    HandleBreedingWishlistAdd(clientId, command);
+  });
 
+void RanchDirector::HandleBreedingWishlistAdd(
+  ClientId clientId,
+  const protocol::AcCmdCRBreedingWishlistAdd& command)
+{
+  // Log a debug message to the console/log file when this happens
+  spdlog::debug("you just added a stallion to wishlist");
+  
+  // Create an empty response object to send back to the client
+  protocol::AcCmdCRBreedingWishlistAddOK response{};
+  
+  // Queue the response to be sent to the client
+  _commandServer.QueueCommand<decltype(response)>(
+    clientId,  // Send it to the specific player who made the request
+    // Lambda function that returns the response when it's time to send it
+    [response]()
+    {
+      return response;  // Return the response object
+    });
+}
 
 void RanchDirector::HandleBreedingFailureCard(
   ClientId clientId,

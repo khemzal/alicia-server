@@ -1338,6 +1338,53 @@ struct RanchCommandBreedingWishlistCancel
     SourceStream& stream);
 };
 
+// Structure that represents the client's request to add a stallion to their wishlist
+struct AcCmdCRBreedingWishlistAdd
+{
+  // The UID (unique ID) of the stallion the player wants to add to their wishlist
+  uint32_t stallionUid{};
+
+  // Returns the command ID/type for this message (0x1eb)
+  static Command GetCommand()
+  {
+    return Command::AcCmdCRBreedingWishlistAdd;
+  }
+
+  // Serializes (converts to bytes) this command for sending to the client
+  static void Write(
+    const AcCmdCRBreedingWishlistAdd& command,
+    SinkStream& stream);
+
+  // Deserializes (converts bytes to object) this command when receiving from the client
+  static void Read(
+    AcCmdCRBreedingWishlistAdd& command,
+    SourceStream& stream);
+};
+
+// Structure that represents the server's response to the add wishlist request
+struct AcCmdCRBreedingWishlistAddOK
+{
+  // Returns the command ID/type for this response (0x1ec)
+  static Command GetCommand()
+  {
+    return Command::AcCmdCRBreedingWishlistAddOK;
+  }
+
+  // Serializes (converts to bytes) this response for sending to the client
+  static void Write(
+    const AcCmdCRBreedingWishlistAddOK& command,
+    SinkStream& stream);
+
+  // Deserializes (converts bytes to object) this response when receiving from the client
+  static void Read(
+    AcCmdCRBreedingWishlistAddOK& command,
+    SourceStream& stream);
+};
+
+
+
+
+
 struct AcCmdCRRanchCmdAction
 {
   uint16_t unk0{};

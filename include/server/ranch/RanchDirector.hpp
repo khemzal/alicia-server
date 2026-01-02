@@ -427,6 +427,11 @@ private:
     ClientId clientId, 
     const protocol::AcCmdCRSendGift& command);
 
+    // Declares the function that will handle when a player adds a stallion to their wishlist
+  void HandleBreedingWishlistAdd(
+    ClientId clientId,  // The ID of the client making the request
+    const protocol::AcCmdCRBreedingWishlistAdd& command);  // The command data from the client
+
   //!
   ServerInstance& _serverInstance;
   //!

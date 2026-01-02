@@ -642,6 +642,34 @@ void AcCmdCRBreedingFailureCardChooseCancel::Read(
   // Empty response
 }
 
+
+void AcCmdCRBreedingWishlistAdd::Write(
+  const AcCmdCRBreedingWishlistAdd& command,
+  SinkStream& stream)
+{
+  stream.Write(command.stallionUid);
+}
+
+void AcCmdCRBreedingWishlistAdd::Read(
+  AcCmdCRBreedingWishlistAdd& command,
+  SourceStream& stream)
+{
+  stream.Read(command.stallionUid);
+}
+
+void AcCmdCRBreedingWishlistAddOK::Write(
+  const AcCmdCRBreedingWishlistAddOK& command,
+  SinkStream& stream)
+{
+}
+
+void AcCmdCRBreedingWishlistAddOK::Read(
+  AcCmdCRBreedingWishlistAddOK& command,
+  SourceStream& stream)
+{
+}
+
+
 void AcCmdCRSearchStallion::Write(
   const AcCmdCRSearchStallion& command,
   SinkStream& stream)
