@@ -123,21 +123,14 @@ void BuildProtocolHorseParts(
   uint8_t tailId = static_cast<uint8_t>(parts.tailTid());
   
   // If this is a foal, map to foal-safe color TIDs
-<<<<<<< HEAD
- // if (isFoal)
-  //{
-    //maneId = MapToFoalColorTid(parts.maneTid());
-    //tailId = MapToFoalColorTid(parts.tailTid());
-    //spdlog::debug("ProtocolHelper: TID after mapping Mane TID={}, Tail TID={}", 
-     // maneId, tailId);
- // }
-=======
+
   if (isFoal)
   {
     maneId = MapToFoalColorTid(parts.maneTid());
     tailId = MapToFoalColorTid(parts.tailTid());
+    spdlog::debug("ProtocolHelper: TID after mapping Mane TID={}, Tail TID={}", 
+      maneId, tailId);
   }
->>>>>>> parent of 4e5c2e1 (add debug logging for TID mapping in HandleTryBreeding and BuildProtocolHorseParts functions)
   
   protocolHorseParts = {
     .skinId = static_cast<uint8_t>(parts.skinTid()),

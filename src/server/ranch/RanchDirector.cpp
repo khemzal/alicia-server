@@ -2203,23 +2203,14 @@ void RanchDirector::HandleTryBreeding(
       // TID 10,15,20,25,30,35,40 -> Color 5 (Grey)
       return ((adultTid - 1) % 5) + 1;
     };
-    
-<<<<<<< HEAD
-    //foalParts.maneId = MapToFoalColorTid(foal.parts.maneTid());
-    //foalParts.tailId = MapToFoalColorTid(foal.parts.tailTid());
-
-    foalParts.maneId = foal.parts.maneTid();
-    foalParts.tailId = foal.parts.tailTid();
+  
 
     spdlog::debug("MapToFoalColorTid: TID after mapping - Mane TID={}, Tail TID={}", 
       foalParts.maneId, foalParts.tailId);
-=======
+
     foalParts.maneId = MapToFoalColorTid(foal.parts.maneTid());
     foalParts.tailId = MapToFoalColorTid(foal.parts.tailTid());
     
-    foalParts.maneId = foal.parts.maneTid(); // add back normal mane/tail TID until we figure out how client handles foal mane/tail colors
-    foalParts.tailId = foal.parts.tailTid();
->>>>>>> parent of 4e5c2e1 (add debug logging for TID mapping in HandleTryBreeding and BuildProtocolHorseParts functions)
 
     foalAppearance.scale = foal.appearance.scale();
     foalAppearance.legLength = foal.appearance.legLength();
