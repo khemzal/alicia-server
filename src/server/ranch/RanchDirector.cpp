@@ -160,6 +160,13 @@ RanchDirector::RanchDirector(ServerInstance& serverInstance)
       HandleBreedingFailureCardChoose(clientId, command);
     });
 
+  // Register the handler that responds to AcCmdCRBreedingWishlistAdd commands
+  _commandServer.RegisterCommandHandler<protocol::AcCmdCRBreedingWishlistAdd>(
+    [this](ClientId clientId, auto& command)
+    {
+      HandleBreedingWishlistAdd(clientId, command);
+    });
+
   _commandServer.RegisterCommandHandler<protocol::AcCmdCRRanchCmdAction>(
     [this](ClientId clientId, const auto& message)
     {
@@ -2333,15 +2340,6 @@ void RanchDirector::HandleBreedingWishlist(
 
     
 }
-
-// Register the handler that responds to AcCmdCRBreedingWishlistAdd commands
-_commandServer.RegisterCommandHandler<protocol::AcCmdCRBreedingWishlistAdd>(
-  // Lambda function that gets called when the command is received
-  [this](ClientId clientId, auto& command)
-  {
-    // Call the actual handler function
-    HandleBreedingWishlistAdd(clientId, command);
-  });
 
 void RanchDirector::HandleBreedingWishlistAdd(
   ClientId clientId,
