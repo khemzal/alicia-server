@@ -2346,7 +2346,7 @@ void RanchDirector::HandleBreedingWishlistAdd(
   const protocol::AcCmdCRBreedingWishlistAdd& command)
 {
   // Log a debug message to the console/log file when this happens
-  spdlog::debug("you just added a stallion to wishlist");
+  spdlog::debug("you just added a stallion to wishlist, its id is {}", command.stallionUid);
   
   // Create an empty response object to send back to the client
   protocol::AcCmdCRBreedingWishlistAddOK response{};
