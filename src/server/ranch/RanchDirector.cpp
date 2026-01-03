@@ -2346,6 +2346,10 @@ void RanchDirector::HandleBreedingWishlist(
       auto& element = response.wishlist.emplace_back();
       stallionRecord.Immutable([&element](const data::Horse& stallion)
       {
+        // Set name and times mated for breeding chance calculation
+        element.unk0 = stallion.name();  // Horse name
+        element.unk4 = stallion.breeding.breedingCount();  // Times mated (pregnancy chance)
+        
         element.uid = stallion.uid();
         element.tid = stallion.tid();
         element.stats.agility = stallion.stats.agility();
