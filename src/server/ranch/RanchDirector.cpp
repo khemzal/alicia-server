@@ -2344,7 +2344,7 @@ void RanchDirector::HandleBreedingWishlist(
     for (const auto& stallionRecord : *stallionRecords)
     {
       auto& element = response.wishlist.emplace_back();
-      stallionRecord.Immutable([&element](const data::Horse& stallion)
+      stallionRecord.Immutable([this, &element](const data::Horse& stallion)
       {
         // Set name and times mated for breeding chance calculation
         element.unk0 = stallion.name();  // Horse name
@@ -2378,6 +2378,33 @@ void RanchDirector::HandleBreedingWishlist(
         
         element.uid = stallion.uid();
         element.tid = stallion.tid();
+        element.grade = stallion.grade();
+        element.lineage = stallion.lineage();
+        
+        // Calculate inheritance rate (same algorithm as breeding market)
+        auto& horseRegistry = GetServerInstance().GetHorseRegistry();
+        const auto& stallionCoatInfo = horseRegistry.GetCoatInfo(stallion.parts.skinTid());
+        uint32_t stallionCombo = stallion.breeding.breedingCombo();
+        uint32_t stallionLineage = stallion.lineage();
+        uint32_t comboBonus = stallionCombo * 1;  // 1% per consecutive success
+        uint32_t pregnancyBonus = (30 - pregnancyChance);  // 0-30% based on freshness
+        uint32_t lineageBonus = (stallionLineage > 1) ? (stallionLineage - 1) : 0;  // 1% per lineage point above base
+        uint16_t totalBonusPercentage = comboBonus + pregnancyBonus + lineageBonus;
+        if (totalBonusPercentage > 100) totalBonusPercentage = 100;
+        float bonusMultiplier = 1.0f + (totalBonusPercentage / 100.0f);
+        float stallionWeight = 10.0f * stallionCoatInfo.inheritanceRate * bonusMultiplier;
+        float typicalTotal = 90.0f + stallionWeight;
+        float estimatedProbability = (stallionWeight / typicalTotal) * 100.0f;
+        element.inheritanceRate = static_cast<uint8_t>(std::min(8.0f, (estimatedProbability / 12.5f)));
+        
+        // Get stallion data for mate price and expiration (from breeding market cache)
+        auto stallionDataOpt = _breedingMarket.GetStallionData(stallion.uid());
+        if (stallionDataOpt)
+        {
+          element.matePrice = stallionDataOpt->breedingCharge;
+          auto expiresAt = stallionDataOpt->registeredAt + std::chrono::hours(24);
+          element.expiresAt = util::TimePointToAliciaTime(expiresAt);
+        }
         element.stats.agility = stallion.stats.agility();
         element.stats.courage = stallion.stats.courage();
         element.stats.rush = stallion.stats.rush();

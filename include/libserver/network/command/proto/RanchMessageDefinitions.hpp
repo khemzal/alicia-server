@@ -1277,6 +1277,10 @@ struct RanchCommandBreedingWishlistOK
     std::string unk0{};
     uint32_t uid{};
     uint32_t tid{};
+    uint8_t grade{};
+    uint8_t inheritanceRate{};
+    uint32_t matePrice{};
+    uint32_t expiresAt{};
     uint8_t unk1{};
     std::string unk2{};
     uint8_t unk3{};
@@ -1288,6 +1292,7 @@ struct RanchCommandBreedingWishlistOK
     Horse::Stats stats{};
     Horse::Parts parts{};
     Horse::Appearance appearance{};
+    uint8_t lineage{};
     uint8_t unk9{};
     uint8_t unk10{};
     uint8_t unk11{};
