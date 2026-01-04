@@ -1112,23 +1112,20 @@ void RanchCommandBreedingWishlistOK::Write(
   stream.Write(static_cast<uint8_t>(command.wishlist.size()));
   for (auto& wishlistElement : command.wishlist)
   {
-    stream.Write(wishlistElement.unk0)
+    stream.Write(wishlistElement.member1)
       .Write(wishlistElement.uid)
       .Write(wishlistElement.tid)
-      .Write(wishlistElement.unk1)
-      .Write(wishlistElement.unk2)
-      .Write(wishlistElement.unk3)
-      .Write(wishlistElement.unk4)
-      .Write(wishlistElement.unk5)
-      .Write(wishlistElement.unk6)
-      .Write(wishlistElement.unk7)
-      .Write(wishlistElement.unk8)
+      .Write(wishlistElement.name)
+      .Write(wishlistElement.grade)
+      .Write(wishlistElement.inheritanceRate)
+      .Write(wishlistElement.matePrice)
+      .Write(wishlistElement.pregnancyChance)
+      .Write(wishlistElement.expiresAt)
       .Write(wishlistElement.stats)
       .Write(wishlistElement.parts)
       .Write(wishlistElement.appearance)
-      .Write(wishlistElement.unk9)
-      .Write(wishlistElement.unk10)
-      .Write(wishlistElement.unk11);
+      .Write(wishlistElement.unk11)
+      .Write(wishlistElement.lineage);
   }
 }
 
