@@ -2344,42 +2344,59 @@ void RanchDirector::HandleBreedingWishlist(
     for (const auto& stallionRecord : *stallionRecords)
     {
       auto& element = response.wishlist.emplace_back();
-      stallionRecord.Immutable([this, &element](const data::Horse& stallion)
+      
+      std::string ownerName = "unknown";
+      const auto ownerRecord = GetServerInstance().GetDataDirector().GetCharacter(
+        stallionRecord.Immutable([&ownerName](const data::Horse& stallion)
+        {
+          // Get owner UID from stallion (need to fetch owner separately)
+          return stallion.ownerUid();
+        }));
+      
+      if (ownerRecord)
       {
-        // Set name and times mated for breeding chance calculation
-        element.unk0 = stallion.name();  // Horse name
-        element.unk4 = stallion.breeding.breedingCount();  // Times mated (pregnancy chance)
+        ownerRecord.Immutable([&ownerName](const data::Character& owner)
+        {
+          ownerName = owner.name();
+        });
+      }
+      
+      stallionRecord.Immutable([this, &element, &ownerName](const data::Horse& stallion)
+      {
+        // Set basic info
+        element.member1 = ownerName;  // Owner name
+        element.name = stallion.name();  // Horse name
+        element.uid = stallion.uid();
+        element.tid = stallion.tid();
+        element.grade = stallion.grade();
+        element.lineage = stallion.lineage();
         
         // Calculate pregnancy chance based on breeding count and grade
         // Grade-based max hearts: G4=5.0, G5=4.6, G6=4.1, G7=3.9, G8=3.2
         // All grades floor at 4% (0.2 hearts) minimum
         uint32_t pregnancyChance = 0;
+        uint32_t breedingCount = stallion.breeding.breedingCount();
         
         switch (stallion.grade())
         {
           case 4:
-            pregnancyChance = std::min(stallion.breeding.breedingCount(), 48u);  // 100% -> 4%
+            pregnancyChance = std::min(breedingCount, 48u);  // 100% -> 4%
             break;
           case 5:
-            pregnancyChance = std::min(stallion.breeding.breedingCount(), 44u);  // 92% -> 4%
+            pregnancyChance = std::min(breedingCount, 44u);  // 92% -> 4%
             break;
           case 6:
-            pregnancyChance = std::min(stallion.breeding.breedingCount(), 39u);  // 82% -> 4%
+            pregnancyChance = std::min(breedingCount, 39u);  // 82% -> 4%
             break;
           case 7:
-            pregnancyChance = std::min(stallion.breeding.breedingCount(), 37u);  // 78% -> 4%
+            pregnancyChance = std::min(breedingCount, 37u);  // 78% -> 4%
             break;
           case 8:
-            pregnancyChance = std::min(stallion.breeding.breedingCount(), 30u);  // 64% -> 4%
+            pregnancyChance = std::min(breedingCount, 30u);  // 64% -> 4%
             break;
         }
         
-        element.unk5 = pregnancyChance;  // Store pregnancy chance
-        
-        element.uid = stallion.uid();
-        element.tid = stallion.tid();
-        element.grade = stallion.grade();
-        element.lineage = stallion.lineage();
+        element.pregnancyChance = pregnancyChance;
         
         // Calculate inheritance rate (same algorithm as breeding market)
         auto& horseRegistry = GetServerInstance().GetHorseRegistry();

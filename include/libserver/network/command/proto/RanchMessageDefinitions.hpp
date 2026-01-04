@@ -1274,28 +1274,23 @@ struct RanchCommandBreedingWishlistOK
 {
   struct WishlistElement
   {
-    std::string unk0{};
+    std::string member1{};
     uint32_t uid{};
     uint32_t tid{};
+    std::string name{};
     uint8_t grade{};
+    //! Indicates the probability of the stallion's coat being inherited by the foal. Represented with colored arrows in-game.
     uint8_t inheritanceRate{};
     uint32_t matePrice{};
+    //! The lower pregnancyChance is, the fuller the hearts are. For example, 0 pregnancyChance = The horse gets pregnant with 64% chance, 30 = 2% chance
+    uint32_t pregnancyChance{};
+    // 1304
     uint32_t expiresAt{};
-    uint8_t unk1{};
-    std::string unk2{};
-    uint8_t unk3{};
-    uint32_t unk4{};
-    uint32_t unk5{};
-    uint32_t unk6{};
-    uint32_t unk7{};
-    uint32_t unk8{};
     Horse::Stats stats{};
     Horse::Parts parts{};
     Horse::Appearance appearance{};
-    uint8_t lineage{};
-    uint8_t unk9{};
-    uint8_t unk10{};
     uint8_t unk11{};
+    uint8_t lineage{};
   };
 
   // List length specified with a uint8_t, max size 8
