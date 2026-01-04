@@ -1133,7 +1133,26 @@ void RanchCommandBreedingWishlistOK::Read(
   RanchCommandBreedingWishlistOK& command,
   SourceStream& stream)
 {
-  throw std::runtime_error("Not implemented.");
+  uint8_t wishlistSize;
+  stream.Read(wishlistSize);
+  for (uint8_t i = 0; i < wishlistSize; ++i)
+  {
+    auto& element = command.wishlist.emplace_back();
+    stream.Read(element.member1)
+      .Read(element.uid)
+      .Read(element.tid)
+      .Read(element.name)
+      .Read(element.grade)
+      .Read(element.inheritanceRate)
+      .Read(element.matePrice)
+      .Read(element.pregnancyChance)
+      .Read(element.expiresAt)
+      .Read(element.stats)
+      .Read(element.parts)
+      .Read(element.appearance)
+      .Read(element.unk11)
+      .Read(element.lineage);
+  }
 }
 
 void AcCmdCRUpdateMountNickname::Write(
