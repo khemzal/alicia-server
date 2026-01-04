@@ -2350,6 +2350,32 @@ void RanchDirector::HandleBreedingWishlist(
         element.unk0 = stallion.name();  // Horse name
         element.unk4 = stallion.breeding.breedingCount();  // Times mated (pregnancy chance)
         
+        // Calculate pregnancy chance based on breeding count and grade
+        // Grade-based max hearts: G4=5.0, G5=4.6, G6=4.1, G7=3.9, G8=3.2
+        // All grades floor at 4% (0.2 hearts) minimum
+        uint32_t pregnancyChance = 0;
+        
+        switch (stallion.grade())
+        {
+          case 4:
+            pregnancyChance = std::min(stallion.breeding.breedingCount(), 48u);  // 100% -> 4%
+            break;
+          case 5:
+            pregnancyChance = std::min(stallion.breeding.breedingCount(), 44u);  // 92% -> 4%
+            break;
+          case 6:
+            pregnancyChance = std::min(stallion.breeding.breedingCount(), 39u);  // 82% -> 4%
+            break;
+          case 7:
+            pregnancyChance = std::min(stallion.breeding.breedingCount(), 37u);  // 78% -> 4%
+            break;
+          case 8:
+            pregnancyChance = std::min(stallion.breeding.breedingCount(), 30u);  // 64% -> 4%
+            break;
+        }
+        
+        element.unk5 = pregnancyChance;  // Store pregnancy chance
+        
         element.uid = stallion.uid();
         element.tid = stallion.tid();
         element.stats.agility = stallion.stats.agility();
